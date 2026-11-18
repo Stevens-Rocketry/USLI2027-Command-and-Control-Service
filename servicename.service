@@ -1,0 +1,12 @@
+[Unit]
+Description=This is a template file, replace name and description as appropriate.
+
+[Service]
+Type=notify-reload
+ExecStart=/usr/bin/xxservice
+Restart=on-failure
+WatchdogSec=5s
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target
