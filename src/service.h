@@ -6,6 +6,12 @@
 #ifndef XXSERVICE_SERVICE_H
 #define XXSERVICE_SERVICE_H
 
+/* DEFINES  */
+
+#define MAXSTATES 1
+
+/* FUNCTIONS */
+
 /* runs to setup the service, before notifying systemd that we are running */
 int service_startup(void);
 /* runs before service is shutdown */
