@@ -12,6 +12,11 @@
 
 #include <stdlib.h>
 
+#include "state.h"
+#include "states/test.h"
+
+State States[MAXSTATES] = {TestState};
+
 int service_startup() {
   /* FILL IN */
   return EXIT_SUCCESS;
