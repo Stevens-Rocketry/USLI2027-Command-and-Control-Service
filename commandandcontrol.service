@@ -3,7 +3,7 @@ Description=This is a template file, replace name and description as appropriate
 
 [Service]
 Type=notify-reload
-ExecStart=/usr/bin/xxservice
+ExecStart=/usr/bin/ccservice
 Restart=on-failure
 WatchdogSec=5s
 RestartSec=1s
