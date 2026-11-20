@@ -10,7 +10,7 @@
 
 /* FUNCTIONS */
 
-int startService(char* ServiceName);
-int stopService(char* ServiceName);
+int startService(char* service_name, const char* job_path);
+int stopService(char* service_name, const char* job_path);
 
 #endif //SDBUS_H
