@@ -50,6 +50,8 @@ static int start_stop_service(const char* serviceName, bool active) {
     return EXIT_BUSY;
   }
 
+  fprintf(stderr, "[service_loop]: %s service %s.\n", active ? "Starting" : "Stopping", serviceName);
+
   if (active) {
     return startService(serviceName, SDBus);
   }
@@ -75,7 +77,6 @@ static int handle_services(const char** services, const bool start) {
       return EXIT_FAILURE;
     }
   }
-
   return EXIT_SUCCESS;
 }
 
