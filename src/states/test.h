@@ -25,7 +25,7 @@ static const State TestState = {
     ID_TESTSTATE,
     &isActive,
     PRIORITY_TESTSTATE,
-    {"test"},
+    {"test.service"},
     {0}
 };
 
