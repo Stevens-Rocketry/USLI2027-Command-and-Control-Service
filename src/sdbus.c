@@ -21,7 +21,7 @@
 
 static inline void freep(void *p) { free(*(void **)p); }
 
-int messageSdBus(char* service_name, const char* member, sd_bus *bus) {
+int messageSdBus(const char* service_name, const char* member, sd_bus *bus) {
     _cleanup_(sd_bus_error_free) sd_bus_error error = SD_BUS_ERROR_NULL;
     _cleanup_(sd_bus_message_unrefp) sd_bus_message *reply = NULL;
 
@@ -43,15 +43,15 @@ int messageSdBus(char* service_name, const char* member, sd_bus *bus) {
     return EXIT_SUCCESS;
 }
 
-int startService(char* service_name, sd_bus *bus) {
+int startService(const char* service_name, sd_bus *bus) {
     return messageSdBus(service_name, "StartUnit", bus);
 }
 
-int stopService(char* service_name, sd_bus *bus) {
+int stopService(const char* service_name, sd_bus *bus) {
     return messageSdBus(service_name, "StopUnit", bus);
 }
 
-int serviceStatus(char* service_name, sd_bus *bus, char** state) {
+int serviceStatus(const char* service_name, sd_bus *bus, char** state) {
     _cleanup_(sd_bus_error_free) sd_bus_error error = SD_BUS_ERROR_NULL;
     _cleanup_(freep) char *unit_path = NULL;
 
@@ -73,7 +73,7 @@ int serviceStatus(char* service_name, sd_bus *bus, char** state) {
     return EXIT_SUCCESS;
 }
 
-int serviceJobID (char* service_name, sd_bus *bus, uint32_t *job_id) {
+int serviceJobID (const char* service_name, sd_bus *bus, uint32_t *job_id) {
     _cleanup_(sd_bus_error_free) sd_bus_error error = SD_BUS_ERROR_NULL;
     _cleanup_(sd_bus_message_unrefp) sd_bus_message *reply = NULL;
     _cleanup_(freep) char *unit_path = NULL;

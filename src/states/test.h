@@ -8,7 +8,7 @@
 
 /* DEFINES */
 
-#define ID_TESTSTATE 0
+#define ID_TESTSTATE 1 /* Never use 0 for ID */
 #define PRIORITY_TESTSTATE 0
 
 /* INCLUDES */
@@ -26,7 +26,7 @@ static const State TestState = {
     &isActive,
     PRIORITY_TESTSTATE,
     {"test"},
-    {"test"}
+    {0}
 };
 
 #endif //TEST_H

@@ -14,9 +14,9 @@
 
 /* FUNCTIONS */
 
-int startService(char* service_name, sd_bus *bus);
-int stopService(char* service_name, sd_bus *bus);
-int serviceStatus(char* service_name, sd_bus *bus, char** state);
-int serviceJobID (char* service_name, sd_bus *bus, uint32_t *job_id);
+int startService(const char* service_name, sd_bus *bus);
+int stopService(const char* service_name, sd_bus *bus);
+int serviceStatus(const char* service_name, sd_bus *bus, char** state);
+int serviceJobID (const char* service_name, sd_bus *bus, uint32_t *job_id);
 
 #endif //SDBUS_H
