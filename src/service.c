@@ -25,6 +25,42 @@ static const State *const States[] = {
   &TestState
 };
 
+static bool is_active_state(const char* activeState) {
+  if (!strcmp(activeState, "active")) {
+    return true;
+  }
+
+  if (!strcmp(activeState, "inactive")) {
+    return false;
+  }
+
+  if (!strcmp(activeState, "failed")) {
+    return false;
+  }
+
+  if (!strcmp(activeState, "activating")) {
+    return true;
+  }
+
+  if (!strcmp(activeState, "deactivating")) {
+    return false;
+  }
+
+  if (!strcmp(activeState, "maintenance")) {
+    return false;
+  }
+
+  if (!strcmp(activeState, "reloading")) {
+    return true;
+  }
+
+  if (!strcmp(activeState, "refreshing")) {
+    return true;
+  }
+
+  return false;
+}
+
 static int start_stop_service(const char* serviceName, bool active) {
   char* activeState;
   uint32_t jobID;
@@ -36,7 +72,7 @@ static int start_stop_service(const char* serviceName, bool active) {
     return r;
   }
 
-  if (!strcmp(activeState, active ? "active" : "inactive")) {
+  if (active == is_active_state(activeState)) {
     free(activeState);
     return EXIT_SUCCESS;
   }
@@ -89,6 +125,8 @@ static int start_services(const char *const services[]) {
 static int stop_services(const char *const services[]) {
   return handle_services(services, false);
 }
+
+/* SERVICE HOOKS */
 
 int service_startup(uint64_t watchdog_interval) {
   int r;
