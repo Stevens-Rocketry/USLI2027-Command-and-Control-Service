@@ -136,12 +136,12 @@ int service_loop() {
   int r;
 
   for (size_t i = 0; i < sizeof(States) / sizeof(State*); i++) {
-    if (States[i]->isActive() && (!current_state->StateID || States[i]->Priority > current_state->Priority)) {
+    if (States[i]->isActive() && (!current_state || States[i]->Priority > current_state->Priority)) {
       current_state = States[i];
     }
   }
 
-  if (!current_state->StateID) {
+  if (!current_state) {
     fprintf(stderr, "[service_loop]: Failed to determine current state!\n");
     return -ENOENT;
   }
