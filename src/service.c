@@ -21,9 +21,6 @@
 #define EXIT_BUSY 2
 
 sd_bus *SDBus;
-/* It is recommended that states are put in order of lowest priority to highest
- * within the array.
- */
 static const State *const States[] = {
   &TestState
 };

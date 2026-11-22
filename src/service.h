@@ -6,10 +6,6 @@
 #ifndef XXSERVICE_SERVICE_H
 #define XXSERVICE_SERVICE_H
 
-/* DEFINES  */
-
-#define MAXSTATES 1
-
 /* INCLUDES */
 
 #include <stdint.h>
