@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <systemd/sd-bus.h>
+#include <errno.h>
 
 #include "state.h"
 #include "states/test.h"
