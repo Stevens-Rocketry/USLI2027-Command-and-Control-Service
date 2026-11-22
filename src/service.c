@@ -76,7 +76,7 @@ static int handle_services(const char** services, const bool start) {
                       "service had jobs queued. Waiting until next iteration.\n", start ? "start" : "stop", services[i]);
     } else if (r != EXIT_SUCCESS) {
       fprintf(stderr, "[service_loop]: Failed to %s service %s!\n", start ? "start" : "stop", services[i]);
-      return EXIT_FAILURE;
+      return -EIO;
     }
   }
   return EXIT_SUCCESS;
@@ -140,7 +140,7 @@ int service_loop() {
 
   if (!current_state.StateID) {
     fprintf(stderr, "[service_loop]: Failed to determine current state!\n");
-    return EXIT_FAILURE;
+    return -ENOENT;
   }
 
   /* now we start services based on our current state */

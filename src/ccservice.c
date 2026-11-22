@@ -48,12 +48,12 @@ int main(void) {
   watchdog_enabled = sd_watchdog_enabled(0, &watchdog_interval);
 
   if (watchdog_enabled) {
-    watchdog_interval /= 2;
+    watchdog_interval /= WATCH_DOG_FACTOR;
   }
 
   /* run custom service startup */
 
-  r = service_startup(watchdog_enabled ? watchdog_interval : SLEEP_TIME);
+  r = service_startup(watchdog_enabled ? watchdog_interval : 0);
   if (r < 0) {
     fprintf(stderr, "Failed to complete startup: %s\n", strerror(-r));
     return EXIT_FAILURE;
