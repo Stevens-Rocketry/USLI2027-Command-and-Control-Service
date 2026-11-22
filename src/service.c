@@ -17,6 +17,7 @@
 #include "state.h"
 #include "states/test.h"
 #include "sdbus.h"
+#include "util.h"
 
 #define EXIT_BUSY 2
 
@@ -58,7 +59,7 @@ static bool is_active_state(const char* activeState) {
 }
 
 static int start_stop_service(const char* serviceName, bool active) {
-  char* activeState;
+  _cleanup_(freep) char* activeState;
   uint32_t jobID;
   int r;
 
@@ -70,15 +71,12 @@ static int start_stop_service(const char* serviceName, bool active) {
 
   if (!strcmp(activeState, "failed")) {
     fprintf(stderr, "[service_loop]: Attempted to %s service %s, but it is marked as failed. Skipping.\n", active ? "start" : "stop", serviceName);
-    free(activeState);
     return EXIT_SUCCESS;
   }
 
   if (active == is_active_state(activeState)) {
-    free(activeState);
     return EXIT_SUCCESS;
   }
-  free(activeState);
 
   r = serviceJobID(serviceName, SDBus, &jobID);
   if (r != EXIT_SUCCESS) {

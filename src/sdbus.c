@@ -13,13 +13,12 @@
 
 #include <systemd/sd-bus.h>
 
-#define _cleanup_(f) __attribute__((cleanup(f)))
+#include "util.h"
+
 #define DESTINATION "org.freedesktop.systemd1"
 #define PATH        "/org/freedesktop/systemd1"
 #define M_INTERFACE "org.freedesktop.systemd1.Manager"
 #define U_INTERFACE "org.freedesktop.systemd1.Unit"
-
-static inline void freep(void *p) { free(*(void **)p); }
 
 int messageSdBus(const char* service_name, const char* member, sd_bus *bus) {
     _cleanup_(sd_bus_error_free) sd_bus_error error = SD_BUS_ERROR_NULL;
