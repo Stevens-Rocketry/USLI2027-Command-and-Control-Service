@@ -22,7 +22,7 @@
 
 int messageSdBus(const char* service_name, const char* member, sd_bus *bus) {
     _cleanup_(sd_bus_error_free) sd_bus_error error = SD_BUS_ERROR_NULL;
-    _cleanup_(sd_bus_message_unrefp) sd_bus_message *reply = NULL;
+    _cleanup_(sd_bus_message_unrefp) sd_bus_message *reply = nullptr;
 
     const char* job_path;
     int r;
