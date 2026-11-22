@@ -37,8 +37,10 @@ static int start_stop_service(const char* serviceName, bool active) {
   }
 
   if (!strcmp(activeState, active ? "active" : "inactive")) {
+    free(activeState);
     return EXIT_SUCCESS;
   }
+  free(activeState);
 
   r = serviceJobID(serviceName, SDBus, &jobID);
   if (r < 0) {
@@ -88,13 +90,20 @@ static int stop_services(const char** services) {
   return handle_services(services, false);
 }
 
-int service_startup() {
+int service_startup(uint64_t watchdog_interval) {
   int r;
   /* connect and authenticate with systemdbus */
 
   r = sd_bus_open_system(&SDBus);
   if (r < 0) {
-    fprintf(stderr, "[service_startup]: Failed to open sd bus: %s\n", strerror(r));
+    fprintf(stderr, "[service_startup]: Failed to open sd bus: %s\n", strerror(-r));
+    return r;
+  }
+
+  /* set sd_bus timeout */
+  r = sd_bus_set_method_call_timeout(SDBus, watchdog_interval);
+  if (r < 0) {
+    fprintf(stderr, "[service_startup]: Failed to set sd bus timeout value to watchdog interval: %s\n", strerror(-r));
     return r;
   }
 
@@ -102,7 +111,7 @@ int service_startup() {
 }
 
 int service_shutdown() {
-  sd_bus_close(SDBus);
+  sd_bus_flush_close_unref(SDBus);
   return EXIT_SUCCESS;
 }
 
@@ -137,15 +146,15 @@ int service_loop() {
   /* now we start services based on our current state */
 
   r = start_services(current_state.ServicesToStart);
-  if (r < 0) {
-    fprintf(stderr, "[service_startup]: Failed to start all services for state %d: %s\n", current_state.StateID, strerror(r));
+  if (!r) {
+    fprintf(stderr, "[service_startup]: Failed to start all services for state %d: %s\n", current_state.StateID, strerror(-r));
     return r;
   }
 
   /* and now we stop services based on our current state */
 
   r = stop_services(current_state.ServicesToStop);
-  if (r < 0) {
+  if (!r) {
     fprintf(stderr, "[service_startup]: Failed to stop all services for state %d: %s\n", current_state.StateID, strerror(r));
     return r;
   }
