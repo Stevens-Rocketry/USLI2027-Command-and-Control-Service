@@ -31,7 +31,7 @@ static int start_stop_service(const char* serviceName, bool active) {
   int r;
 
   r = serviceStatus(serviceName, SDBus, &activeState);
-  if (r < 0) {
+  if (r != EXIT_SUCCESS) {
     fprintf(stderr, "[service_loop]: Failed to acquire service status for %s: %s\n", serviceName, strerror(-r));
     return r;
   }
@@ -43,7 +43,7 @@ static int start_stop_service(const char* serviceName, bool active) {
   free(activeState);
 
   r = serviceJobID(serviceName, SDBus, &jobID);
-  if (r < 0) {
+  if (r != EXIT_SUCCESS) {
     fprintf(stderr, "[service_loop]: Failed to acquire service(%s)'s current job ID: %s\n", serviceName, strerror(-r));
     return r;
   }
@@ -146,7 +146,7 @@ int service_loop() {
   /* now we start services based on our current state */
 
   r = start_services(current_state.ServicesToStart);
-  if (!r) {
+  if (r != EXIT_SUCCESS) {
     fprintf(stderr, "[service_startup]: Failed to start all services for state %d: %s\n", current_state.StateID, strerror(-r));
     return r;
   }
@@ -154,8 +154,8 @@ int service_loop() {
   /* and now we stop services based on our current state */
 
   r = stop_services(current_state.ServicesToStop);
-  if (!r) {
-    fprintf(stderr, "[service_startup]: Failed to stop all services for state %d: %s\n", current_state.StateID, strerror(r));
+  if (r != EXIT_SUCCESS) {
+    fprintf(stderr, "[service_startup]: Failed to stop all services for state %d: %s\n", current_state.StateID, strerror(-r));
     return r;
   }
 
