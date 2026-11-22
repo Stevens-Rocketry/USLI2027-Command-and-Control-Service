@@ -1,5 +1,6 @@
 [Unit]
 Description=This service stops or starts other services depending on the determined flight state of the payload.
+StartLimitIntervalSec=0
 
 [Service]
 Type=notify-reload
