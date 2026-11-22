@@ -1,7 +1,7 @@
 # By George K Oliynyk @ 2026
 
 PROG=	ccservice
-OBJS=	ccservice.o notify.o service.o test.o sdbus.o util.o
+OBJS=	ccservice.o notify.o service.o test.o sdbus.o
 CFLAGS+=	-Wall -Werror -Wextra -Wformat=2 -Wjump-misses-init -Wlogical-op -Wpedantic -Wshadow -g
 LDLIBS= 	-lsystemd
 VPATH=		src:src/states

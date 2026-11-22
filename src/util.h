@@ -10,6 +10,10 @@
 
 #define _cleanup_(f) __attribute__((cleanup(f)))
 
+/* INCLUDES */
+
+#include <stdlib.h>
+
 /* FUNCTIONS */
 
 static inline void freep(void *p) { free(*(void **)p); }
