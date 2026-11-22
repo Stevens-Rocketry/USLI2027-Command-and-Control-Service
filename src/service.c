@@ -24,7 +24,9 @@ sd_bus *SDBus;
 /* It is recommended that states are put in order of lowest priority to highest
  * within the array.
  */
-State States[MAXSTATES] = {TestState};
+static const State *const States[] = {
+  &TestState
+};
 
 static int start_stop_service(const char* serviceName, bool active) {
   char* activeState;
@@ -62,7 +64,7 @@ static int start_stop_service(const char* serviceName, bool active) {
   return stopService(serviceName, SDBus);
 }
 
-static int handle_services(const char** services, const bool start) {
+static int handle_services(const char *const services[], const bool start) {
   int r = 0;
 
   for (int i = 0; i < MAXSERVICES; i++) {
@@ -83,11 +85,11 @@ static int handle_services(const char** services, const bool start) {
   return EXIT_SUCCESS;
 }
 
-static int start_services(const char** services) {
+static int start_services(const char *const services[]) {
   return handle_services(services, true);
 }
 
-static int stop_services(const char** services) {
+static int stop_services(const char *const services[]) {
   return handle_services(services, false);
 }
 
@@ -130,33 +132,33 @@ int service_loop() {
 
   /* First determine our current state */
 
-  State current_state = {0};
+  const State *current_state = NULL;
   int r;
 
-  for (int i = 0; i < MAXSTATES; i++) {
-    if (States[i].isActive() && (!current_state.StateID || States[i].Priority > current_state.Priority)) {
+  for (size_t i = 0; i < sizeof(States) / sizeof(State*); i++) {
+    if (States[i]->isActive() && (!current_state->StateID || States[i]->Priority > current_state->Priority)) {
       current_state = States[i];
     }
   }
 
-  if (!current_state.StateID) {
+  if (!current_state->StateID) {
     fprintf(stderr, "[service_loop]: Failed to determine current state!\n");
     return -ENOENT;
   }
 
   /* now we start services based on our current state */
 
-  r = start_services(current_state.ServicesToStart);
+  r = start_services(current_state->ServicesToStart);
   if (r != EXIT_SUCCESS) {
-    fprintf(stderr, "[service_startup]: Failed to start all services for state %d: %s\n", current_state.StateID, strerror(-r));
+    fprintf(stderr, "[service_startup]: Failed to start all services for state %d: %s\n", current_state->StateID, strerror(-r));
     return r;
   }
 
   /* and now we stop services based on our current state */
 
-  r = stop_services(current_state.ServicesToStop);
+  r = stop_services(current_state->ServicesToStop);
   if (r != EXIT_SUCCESS) {
-    fprintf(stderr, "[service_startup]: Failed to stop all services for state %d: %s\n", current_state.StateID, strerror(-r));
+    fprintf(stderr, "[service_startup]: Failed to stop all services for state %d: %s\n", current_state->StateID, strerror(-r));
     return r;
   }
 

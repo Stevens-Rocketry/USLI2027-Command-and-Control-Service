@@ -8,25 +8,15 @@
 
 /* DEFINES */
 
-#define ID_TESTSTATE 1 /* Never use 0 for ID */
+#define ID_TESTSTATE 1
 #define PRIORITY_TESTSTATE 0
 
 /* INCLUDES */
 
 #include "../state.h"
 
-/* FUNCTIONS */
-
-bool isActive();
-
 /* VARS */
 
-static const State TestState = {
-    ID_TESTSTATE,
-    &isActive,
-    PRIORITY_TESTSTATE,
-    {"test.service"},
-    {0}
-};
+extern const State TestState;
 
 #endif //TEST_H
