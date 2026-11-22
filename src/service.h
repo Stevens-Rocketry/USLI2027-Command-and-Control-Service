@@ -10,10 +10,14 @@
 
 #define MAXSTATES 1
 
+/* INCLUDES */
+
+#include <stdint.h>
+
 /* FUNCTIONS */
 
 /* runs to setup the service, before notifying systemd that we are running */
-int service_startup(void);
+int service_startup(uint64_t);
 /* runs before service is shutdown */
 int service_shutdown(void);
 
