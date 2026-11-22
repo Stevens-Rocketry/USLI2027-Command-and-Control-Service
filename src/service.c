@@ -34,10 +34,6 @@ static bool is_active_state(const char* activeState) {
     return false;
   }
 
-  if (!strcmp(activeState, "failed")) {
-    return false;
-  }
-
   if (!strcmp(activeState, "activating")) {
     return true;
   }
@@ -70,6 +66,11 @@ static int start_stop_service(const char* serviceName, bool active) {
   if (r != EXIT_SUCCESS) {
     fprintf(stderr, "[service_loop]: Failed to acquire service status for %s: %s\n", serviceName, strerror(-r));
     return r;
+  }
+
+  if (!strcmp(activeState, "failed")) {
+    fprintf(stderr, "[service_loop]: Attempted to start service %s, but it is marked as failed. Skipping.\n", serviceName);
+    return EXIT_SUCCESS;
   }
 
   if (active == is_active_state(activeState)) {
