@@ -41,12 +41,23 @@ journalctl -u commandandcontrol -f # view logs
 
 On each loop, `ccservice` polls every state's `isActive()`. Of the active states, the one with the highest `Priority` wins. The service then starts each unit in that state's `ServicesToStart` and stops each unit in its `ServicesToStop`. Units in neither list are left alone.
 
-Managed units must be installed but disabled, or they start at boot regardless of flight state. `ccservice` skips units in `failed`, so each needs its own `Restart=` policy.
+Managed units must be installed disabled and define their own `Restart=` policy.
 
 ## Adding a state
 
 1. Copy `src/states/test.{c,h}` to `src/states/<name>.{c,h}`.
-2. Give the state a unique `ID_`, choose a `PRIORITY_`, and keep `isActive()` `static`. It runs on every loop, so it must never block.
+2. Set a unique `ID_` and a `PRIORITY_`. Keep `isActive()` static and non-blocking.
 3. List its units in `ServicesToStart` and `ServicesToStop`, at most `MAXSERVICES` (5) per list.
 4. Include the header in `src/service.c` and add `&<Name>State` to `States[]`.
 5. Add `<name>.o` to `OBJS` in the `Makefile`.
+
+## Layout
+
+| What | Where |
+|---|---|
+| Daemon lifecycle (signals, watchdog, sd_notify) | `src/ccservice.c` |
+| State selection and unit control | `src/service.c` |
+| systemd D-Bus helpers | `src/sdbus.c` |
+| Timing constants | `src/ccservice.h` |
+
+Based on systemd's `notify-selfcontained-example.c` (MIT-0).
