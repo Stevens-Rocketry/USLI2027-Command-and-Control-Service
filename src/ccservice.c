@@ -53,7 +53,7 @@ int main(void) {
 
   /* run custom service startup */
 
-  r = service_startup(watchdog_interval);
+  r = service_startup(watchdog_enabled ? watchdog_interval : SLEEP_TIME);
   if (r < 0) {
     fprintf(stderr, "Failed to complete startup: %s\n", strerror(-r));
     return EXIT_FAILURE;
