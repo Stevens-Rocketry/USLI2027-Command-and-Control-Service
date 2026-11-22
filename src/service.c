@@ -69,7 +69,8 @@ static int start_stop_service(const char* serviceName, bool active) {
   }
 
   if (!strcmp(activeState, "failed")) {
-    fprintf(stderr, "[service_loop]: Attempted to start service %s, but it is marked as failed. Skipping.\n", serviceName);
+    fprintf(stderr, "[service_loop]: Attempted to %s service %s, but it is marked as failed. Skipping.\n", active ? "start" : "stop", serviceName);
+    free(activeState);
     return EXIT_SUCCESS;
   }
 
