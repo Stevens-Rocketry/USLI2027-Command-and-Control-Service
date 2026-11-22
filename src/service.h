@@ -3,8 +3,8 @@
  *    Stevens Rocketry USLI 2027
  */
 
-#ifndef XXSERVICE_SERVICE_H
-#define XXSERVICE_SERVICE_H
+#ifndef CCSERVICE_SERVICE_H
+#define CCSERVICE_SERVICE_H
 
 /* INCLUDES */
 
@@ -14,6 +14,7 @@
 
 /* runs to setup the service, before notifying systemd that we are running */
 int service_startup(uint64_t);
+
 /* runs before service is shutdown */
 int service_shutdown(void);
 
@@ -26,4 +27,4 @@ int service_oneshot(void);
 /* runs continuously while the service is alive */
 int service_loop(void);
 
-#endif // XXSERVICE_SERVICE_H
+#endif // CCSERVICE_SERVICE_H
