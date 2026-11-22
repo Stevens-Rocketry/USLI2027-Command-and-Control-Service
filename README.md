@@ -59,5 +59,3 @@ Managed units must be installed disabled and define their own `Restart=` policy.
 | State selection and unit control | `src/service.c` |
 | systemd D-Bus helpers | `src/sdbus.c` |
 | Timing constants | `src/ccservice.h` |
-
-Based on systemd's `notify-selfcontained-example.c` (MIT-0).
