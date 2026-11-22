@@ -3,9 +3,9 @@
  *    Stevens Rocketry USLI 2027
  */
 
-#ifndef TSSERVICE_NOTIFY_H
-#define TSSERVICE_NOTIFY_H
+#ifndef CCSERVICE_NOTIFY_H
+#define CCSERVICE_NOTIFY_H
 
 int notify_reloading(void);
 
-#endif // TSSERVICE_NOTIFY_H
+#endif // CCSERVICE_NOTIFY_H
