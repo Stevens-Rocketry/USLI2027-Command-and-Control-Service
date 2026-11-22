@@ -59,7 +59,7 @@ static bool is_active_state(const char* activeState) {
 }
 
 static int start_stop_service(const char* serviceName, bool active) {
-  _cleanup_(freep) char* activeState;
+  _cleanup_(freep) char* activeState = nullptr;
   uint32_t jobID;
   int r;
 
